@@ -1,0 +1,58 @@
+require(doMC)
+require(foreach)
+require(lattice)
+
+d.train  <- read.csv("training.csv", stringsAsFactors=F)
+im.train <- foreach(im = d.train$Image, .combine=rbind) %do% {
+  as.integer(unlist(strsplit(im, " ")))
+}
+
+d.test  <- read.csv("test.csv", stringsAsFactors=F)
+im.test <- foreach(im = d.test$Image, .combine=rbind) %do% {
+  as.integer(unlist(strsplit(im, " ")))
+}
+d.test$Image <- NULL
+
+# export standard 96*96 training data #
+
+j <- 1
+for (j in 1:nrow(im.train)){
+  jpeg(paste("/Users/Tony/Desktop/standard_train/", j, ".jpeg", sep=""),width=96,height=96)
+  par(mar= c(0,0,0,0))
+  image(1:96, 1:96, matrix(data=rev(im.train[j,]), nrow=96, ncol=96), 
+        col=gray((0:255)/255),axes=F)
+  dev.off()
+}
+
+# export standard 96*96 testing data #
+
+i <- 1
+for (i in 1:nrow(im.test)){
+  jpeg(paste("/Users/Tony/Desktop/standard_test/", i, ".jpeg", sep=""),width=96,height=96)
+  par(mar= c(0,0,0,0))
+  image(1:96, 1:96, matrix(data=rev(im.test[i,]), nrow=96, ncol=96), 
+        col=gray((0:255)/255),axes=F)
+  dev.off()
+}
+
+# export expanded 480*480 training data #
+
+l <- 1
+for (l in 1:nrow(im.train)){
+  jpeg(paste("/Users/Tony/Desktop/expanded_train/", l, ".jpeg", sep=""),width=480,height=480)
+  par(mar= c(0,0,0,0))
+  image(1:96, 1:96, matrix(data=rev(im.train[l,]), nrow=96, ncol=96), 
+        col=gray((0:255)/255),axes=F)
+  dev.off()
+}
+
+# export expanded 480*480 testing data #
+
+k <- 1
+for (k in 1:nrow(im.test)){
+  jpeg(paste("/Users/Tony/Desktop/expanded_test/", k, ".jpeg", sep=""),width=480,height=480)
+  par(mar= c(0,0,0,0))
+  image(1:96, 1:96, matrix(data=rev(im.test[k,]), nrow=96, ncol=96), 
+        col=gray((0:255)/255),axes=F)
+  dev.off()
+}
